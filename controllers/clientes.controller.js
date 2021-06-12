@@ -17,44 +17,24 @@ exports.create = async (req, res) => {
   const body={};
   if(req.files['filename']){
     const { filename } = req.files['filename'][0]
-    body.logo= `https://knowmadcity.herokuapp.com/public/${filename}`;  
+    body.logo = `https://knowmadcity.herokuapp.com/public/${filename}`;  
   }
-  body.tipo_cliente= req.body.tipo_cliente;
-  body.tipo_documento= req.body.tipo_documento;
-  body.numero_documento= req.body.numero_documento;
-  body.departamento= req.body.departamento;
-  body.codigo_departamento= req.body.codigo_departamento;
-  body.municipio= req.body.municipio;
-  body.codigo_municipio= req.body.codigo_municipio;
-  body.naturaleza_juridica= req.body.naturaleza_juridica;
-  body.nombre_prestador= req.body.nombre_prestador;
-  body.codigo_prestador= req.body.codigo_prestador;
-  body.codigo= req.body.codigo;
-  body.clase_prestador= req.body.clase_prestador;
-  body.ese= req.body.ese;
-  body.direccion= req.body.direccion;
-  body.telefono= req.body.telefono;
-  body.fax= req.body.fax;
-  body.celular= req.body.celular;
-  body.email= req.body.email;
-  body.razon_social= req.body.razon_social;
-  body.representante_legal= req.body.representante_legal;
-  body.numero_sede= req.body.numero_sede;
-  body.nivel_atencion= req.body.nivel_atencion;
-  body.caracter_territorial= req.body.caracter_territorial;
-  body.nombre_contacto= req.body.nombre_contacto;
-  body.cargo_contacto= req.body.cargo_contacto;
-  body.telefono_contacto= req.body.telefono_contacto;
-  body.celular_contacto= req.body.celular_contacto;
-  body.email_contacto= req.body.email_contacto;
-  // Save Book in database
+
+  body.nombre=req.body.nombre;
+  body.direccion=req.body.fundadireccionda;
+  body.telefono=req.body.telefono;
+  body.fax=req.body.fax;
+  body.celular=req.body.celular;
+  body.email=req.body.email; 
+  body.status=req.body.status; 
+
  await User.create({
-     nombre:body.nombre_prestador,
+     nombre:req.body.nombre,
      status:"activo",
      tipo:"Cliente",
      imagen:body.logo,
      email:body.email,
-     password: bcrypt.hashSync(req.body.email, 8)
+     password: bcrypt.hashSync(req.body.password, 8)
  })
     .then(data => {
       res.send(data);
@@ -67,8 +47,6 @@ exports.create = async (req, res) => {
       });
     }); 
 };
-
-
 async function CrearCliente(body){
   // Save
   await  Clientes.create(body)
@@ -79,29 +57,8 @@ async function CrearCliente(body){
   });
 }
 
-exports.findFormato = async (req, res) => {
-const id =req.body.id;
-await  Abonos.findAll({
-    limit: 3000000,
-    offset: 0,
-    where: {formato_id: id}, // conditions
-    order: [
-      ['id', 'DESC'],
-    ],
-  })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.send(500).send({
-        message: err.message || "Some error accurred while retrieving books."
-      });
-    });
-};
-
-
 exports.findAll = async (req, res) => {
-    await  Clientes.findAndCountAll({
+    await  Clientes.findAll({
         limit: 3000000,
         offset: 0,
         where: { }, // conditions
@@ -125,57 +82,26 @@ exports.findAll = async (req, res) => {
         });
     };
 
-// Find a single with an id
-exports.findOne = async (req, res) => {
-  const id = req.params.id;
-
- await Abonos.findByPk(id)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: `erro al editar el cargo= ${id}`
-      });
-    });
-};
 
 // Update a Book by the id in the request
 exports.update = async (req, res) => {
-    const body={};
-    if(req.files['filename']){
-      const { filename } = req.files['filename'][0]
-      body.logo= `https://knowmadcity.herokuapp.com/public/${filename}`;  
-    }
-    body.tipo_cliente= req.body.tipo_cliente;
-    body.tipo_documento= req.body.tipo_documento;
-    body.numero_documento= req.body.numero_documento;
-    body.departamento= req.body.departamento;
-    body.codigo_departamento= req.body.codigo_departamento;
-    body.municipio= req.body.municipio;
-    body.codigo_municipio= req.body.codigo_municipio;
-    body.naturaleza_juridica= req.body.naturaleza_juridica;
-    body.nombre_prestador= req.body.nombre_prestador;
-    body.codigo_prestador= req.body.codigo_prestador;
-    body.codigo= req.body.codigo;
-    body.clase_prestador= req.body.clase_prestador;
-    body.ese= req.body.ese;
-    body.direccion= req.body.direccion;
-    body.telefono= req.body.telefono;
-    body.fax= req.body.fax;
-    body.celular= req.body.celular;
-    body.email= req.body.email;
-    body.razon_social= req.body.razon_social;
-    body.representante_legal= req.body.representante_legal;
-    body.numero_sede= req.body.numero_sede;
-    body.nivel_atencion= req.body.nivel_atencion;
-    body.caracter_territorial= req.body.caracter_territorial;
-    body.nombre_contacto= req.body.nombre_contacto;
-    body.cargo_contacto= req.body.cargo_contacto;
-    body.telefono_contacto= req.body.telefono_contacto;
-    body.celular_contacto= req.body.celular_contacto;
-    body.email_contacto= req.body.email_contacto;
-    body.user_id= req.body.user_id;
+  // Create a Book
+  const body={};
+  if(req.files['filename']){
+    const { filename } = req.files['filename'][0]
+    body.logo = `https://knowmadcity.herokuapp.com/public/${filename}`;  
+  }
+  if(req.files['filename']){
+    const { filename } = req.files['filename'][0]
+    body.imagen = `https://knowmadcity.herokuapp.com/public/${filename}`;  
+  }
+  body.nombre=req.body.nombre;
+  body.direccion=req.body.fundadireccionda;
+  body.telefono=req.body.telefono;
+  body.fax=req.body.fax;
+  body.celular=req.body.celular;
+  body.email=req.body.email; 
+  body.status=req.body.status; 
 
     await Clientes.update(body,{
         where: { id: req.body.id }
@@ -185,10 +111,7 @@ exports.update = async (req, res) => {
         res.send({
           message: "editado satisfactoriamente."
         });
-        User.update({
-            nombre:req.body.nombre_prestador,
-            status:req.body.status
-         },{
+        User.update(body,{
             where: { id: req.body.user_id }
           })
       } else {

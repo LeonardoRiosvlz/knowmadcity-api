@@ -23,17 +23,11 @@ app.use('/public',express.static(`${__dirname}/storage/imgs`));
 app.use('/api', require('./routes/user.routes'));
 app.use('/api', require('./routes/auth.routes'));
 app.use('/api', require('./routes/clientes.routes'));
-app.use('/api', require('./routes/cargos.routes'));
-app.use('/api', require('./routes/sedes.routes'));
-app.use('/api', require('./routes/areas.routes'));
-app.use('/api', require('./routes/perfil.routes'));
-app.use('/api', require('./routes/procesos.routes'));
-app.use('/api', require('./routes/permisos.routes'));
-app.use('/api', require('./routes/tipoprocesos.routes'));
-app.use('/api', require('./routes/subprocesos.routes'));
-app.use('/api', require('./routes/normatividad.routes'));
-app.use('/api', require('./routes/tipodocumentos.routes'));
-app.use('/api', require('./routes/documento.routes'));
+app.use('/api', require('./routes/proyectos.routes'));
+app.use('/api', require('./routes/empresas.routes'));
+
+
+
 // Middleware para Vue.js router modo history
 const history = require('connect-history-api-fallback');
 app.use(history());
