@@ -17,11 +17,24 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
             type: DataTypes.STRING(40), 
             unique: false
         },
+        status: {
+          type: DataTypes.ENUM('creado', 'procesado', 'enviado', 'aceptado', 'rechazado'), 
+          default:'creado',
+          unique: false
+        },
+        presupuesto: {
+          type: DataTypes.STRING(40), 
+          unique: false
+        },
+        proyectos_propuestos: {
+          type: DataTypes.JSON, 
+          unique: false
+        },
         promotores: {
             type: DataTypes.JSON,
             unique: false
         },
-        obejetivos: {
+        objetivos: { 
             type: DataTypes.JSON,
             unique: false
         },
@@ -29,10 +42,10 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
             type: DataTypes.JSON,
             unique: false
         },
-        descripcion_iniciativa: {
-            type: DataTypes.TEXT,
-            unique: false
-        },
+        descripcion_iniciativa:  {
+          type: DataTypes.JSON,
+          unique: false
+      },
         justificacion: {
             type: DataTypes.TEXT,
             unique: false

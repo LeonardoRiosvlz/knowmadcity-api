@@ -62,8 +62,8 @@ exports.findAll = async (req, res) => {
         });
     };
 
-    exports.listarAdmin = async (req, res) => {
-      await  Empresas.findAndCountAll({
+    exports.listarEmpresas = async (req, res) => {
+      await  Empresas.findAll({
           limit: 3000000,
           offset: 0,
           where: { cliente_id :req.body.cliente_id  }, // conditions

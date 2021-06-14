@@ -1,12 +1,7 @@
 const db = require("../models");
 const Proyectos = db.proyectos;
-const User = db.user;
+const Empresa = db.empresas;
 const Op = db.Op;
-
-
-
-
-
 
 // Create and Save a new Book
 exports.create = async (req, res) => {
@@ -18,14 +13,28 @@ exports.create = async (req, res) => {
     return;
   }
   const body={};
+  body.numero=req.body.numero;
   body.titulo=req.body.titulo;
-  body.promotores=req.body.titulo;
-  body.obejetivos=req.body.titulo;
-  body.metas=req.body.titulo;
-  body.descripcion_iniciativa=req.body.titulo;
-  body.justificacion=req.body.titulo;
+  body.presupuesto=req.body.presupuesto;
+  if(req.body.proyectos_propuestos){
+    body.proyectos_propuestos=req.body.proyectos_propuestos;
+  }
+  if(req.body.promotores){
+    body.promotores=req.body.promotores;
+  }
+  if(req.body.objetivos){
+    body.objetivos=req.body.objetivos;
+  }
+  if(req.body.meta){
+    body.metas=req.body.metas; 
+  }
+  if(req.body.descripcion_iniciativa){
+    body.descripcion_iniciativa=req.body.descripcion_iniciativa; 
+  }
+  body.justificacion=req.body.justificacion;
+  body.empresa_id=req.body.empresa_id;
   // Save
-await  Proyectos.create(data)
+await Proyectos.create(body)
     .then(data => {
       res.send(data);
     })
@@ -36,6 +45,35 @@ await  Proyectos.create(data)
       return;
     });
 };
+
+
+exports.find = async (req, res) => {
+
+await  Proyectos.findAll({
+    limit: 3000000,
+    offset: 0,
+    where: {
+    }, 
+    include: [  
+      {
+        model:Empresa,
+        where:{ cliente_id:req.body.cliente_id}
+      }
+    ],
+    order: [
+      ['id', 'DESC'],
+    ],
+  })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.send(500).send({
+        message: err.message || "Some error accurred while retrieving books."
+      });
+    });
+};
+
 
 
 exports.findAll = async (req, res) => {
@@ -80,12 +118,26 @@ exports.update = async (req, res) => {
 
   const id = req.body.id;
   const body={};
+  body.numero=req.body.numero;
   body.titulo=req.body.titulo;
-  body.promotores=req.body.titulo;
-  body.obejetivos=req.body.titulo;
-  body.metas=req.body.titulo;
-  body.descripcion_iniciativa=req.body.titulo;
-  body.justificacion=req.body.titulo;
+  body.presupuesto=req.body.presupuesto;
+  if(req.body.proyectos_propuestos){
+    body.proyectos_propuestos=req.body.proyectos_propuestos;
+  }
+  if(req.body.promotores){
+    body.promotores=req.body.promotores;
+  }
+  if(req.body.objetivos){
+    body.objetivos=req.body.objetivos;
+  }
+  if(req.body.meta){
+    body.metas=req.body.metas; 
+  }
+  if(req.body.descripcion_iniciativa){
+    body.descripcion_iniciativa=req.body.descripcion_iniciativa; 
+  }
+  body.justificacion=req.body.justificacion;
+  body.empresa_id=req.body.empresa_id;
   await Proyectos.update(body,{
     where: { id: id }
   })
@@ -109,15 +161,14 @@ exports.update = async (req, res) => {
 
 // Delete a Book with the specified id in the request
 exports.delete = async (req, res) => {
-  console.log(req)
-  const id = req.body.id;
+
  await Proyectos.destroy({
-    where: { id: id }
+    where: { id: req.body.id }
   })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Cargo borrado satisfactoriamente!"
+          message: " borrado satisfactoriamente!"
         });
       } else {
         res.send({

@@ -37,8 +37,8 @@ db.user.hasMany(db.cliente, { foreignKey: 'user_id' });
 db.cliente.belongsTo(db.user, { foreignKey: 'user_id' });
 db.cliente.hasMany(db.empresas, { foreignKey: 'cliente_id' });
 db.empresas.belongsTo(db.cliente, { foreignKey: 'cliente_id' });
-db.empresas.hasMany(db.proyectos, { foreignKey: 'empresas_id' });
-db.proyectos.belongsTo(db.empresas, { foreignKey: 'empresas_id' });
+db.empresas.hasMany(db.proyectos, { foreignKey: 'empresa_id' });
+db.proyectos.belongsTo(db.empresas, { foreignKey: 'empresa_id' });
 db.ROLES = ["user", "moderator", "admin"];
 
 module.exports = db;
