@@ -31,6 +31,7 @@ exports.create = async (req, res) => {
   if(req.body.descripcion_iniciativa){
     body.descripcion_iniciativa=req.body.descripcion_iniciativa; 
   }
+  body.descripcion=req.body.descripcion;
   body.justificacion=req.body.justificacion;
   body.empresa_id=req.body.empresa_id;
   // Save
@@ -136,6 +137,7 @@ exports.update = async (req, res) => {
   if(req.body.descripcion_iniciativa){
     body.descripcion_iniciativa=req.body.descripcion_iniciativa; 
   }
+  body.descripcion=req.body.descripcion;
   body.justificacion=req.body.justificacion;
   body.empresa_id=req.body.empresa_id;
   await Proyectos.update(body,{

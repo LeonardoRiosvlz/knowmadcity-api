@@ -36,19 +36,23 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
         },
         objetivos: { 
             type: DataTypes.JSON,
-            unique: false
+          
         },
         metas: {
             type: DataTypes.JSON,
-            unique: false
+         
         },
         descripcion_iniciativa:  {
           type: DataTypes.JSON,
-          unique: false
-      },
+          
+        },
+        descripcion:  {
+            type: DataTypes.TEXT,
+        
+        },
         justificacion: {
             type: DataTypes.TEXT,
-            unique: false
+           
         },
         created_at: {
              allowNull: false,
