@@ -174,12 +174,12 @@ exports.update = (req, res) => {
   const body={};
   if(req.files['filename']){
     const { filename } = req.files['filename'][0]
-    body.imagen= `http://localhost:5000/public/${filename}`;
+    body.imagen= `https://knowmadcity.herokuapp.com/public/${filename}`;
     console.log(body.imagen);
   }
   if(req.files['firma']){
     const { firma } = req.files['firma'][0]
-    body.firma= `http://localhost:5000/public/${firma}`;
+    body.firma= `https://knowmadcity.herokuapp.com/public/${firma}`;
     console.log(body.imagen);
   }
   if (req.codigo) {

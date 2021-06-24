@@ -17,11 +17,11 @@ exports.create = async (req, res) => {
   const body={};
   if(req.files['filename']){
     const { filename } = req.files['filename'][0]
-    body.logo = `https://knowmadcity.herokuapp.com/public/${filename}`;  
+    body.logo = `https://knowmadcityapp.herokuapp.com/public/${filename}`;  
   }
   if(req.files['filename']){
     const { filename } = req.files['filename'][0]
-    body.imagen = `https://knowmadcity.herokuapp.com/public/${filename}`;  
+    body.imagen = `https://knowmadcityapp.herokuapp.com/public/${filename}`;  
   }
   body.nombre=req.body.nombre;
   body.direccion=req.body.fundadireccionda;
@@ -92,11 +92,11 @@ exports.update = async (req, res) => {
   const body={};
   if(req.files['filename']){
     const { filename } = req.files['filename'][0]
-    body.logo = `https://knowmadcity.herokuapp.com/public/${filename}`;  
+    body.logo = `https://knowmadcityapp.herokuapp.com/public/${filename}`;  
   }
   if(req.files['filename']){
     const { filename } = req.files['filename'][0]
-    body.imagen = `https://knowmadcity.herokuapp.com/public/${filename}`;  
+    body.imagen = `https://knowmadcityapp.herokuapp.com/public/${filename}`;  
   }
   body.nombre=req.body.nombre;
   body.direccion=req.body.fundadireccionda;
