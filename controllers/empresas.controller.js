@@ -14,7 +14,7 @@ exports.create = async (req, res) => {
     return;
   }
   // Create a Book
-  const body={};
+  const body={}; 
   if(req.files['filename']){
     const { filename } = req.files['filename'][0]
     body.logo = `https://plataformaknowmad.herokuapp.com/public/${filename}`;  
