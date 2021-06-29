@@ -17,7 +17,7 @@ exports.create = async (req, res) => {
   const body={};
   if(req.files['filename']){
     const { filename } = req.files['filename'][0]
-    body.logo = `https://knowmadcity.herokuapp.com/public/${filename}`;  
+    body.logo = `https://plataformaknowmad.herokuapp.com/public/${filename}`;  
   }
   body.nombre=req.body.nombre;
   body.cargo_contacto=req.body.cargo_contacto;
@@ -88,7 +88,7 @@ exports.update = async (req, res) => {
   const body={};
   if(req.files['filename']){
     const { filename } = req.files['filename'][0]
-    body.logo = `https://knowmadcity.herokuapp.com/public/${filename}`;  
+    body.logo = `https://plataformaknowmad.herokuapp.com/public/${filename}`;  
   }
   body.nombre=req.body.nombre;
   body.cargo_contacto=req.body.cargo_contacto;
