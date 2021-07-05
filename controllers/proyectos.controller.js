@@ -1,6 +1,7 @@
 const db = require("../models");
 const Proyectos = db.proyectos;
 const Empresa = db.empresas;
+const Cliente = db.cliente;
 const Op = db.Op;
 
 // Create and Save a new Book
@@ -83,6 +84,34 @@ await  Proyectos.findAll({
 
 
 
+
+exports.findOne = async (req, res) => {
+
+  await  Proyectos.findOne({
+      where: {
+        id :req.body.id
+      }, 
+      include: [  
+        {
+          model:Empresa,
+        }
+      ],
+      order: [
+        ['id', 'DESC'],
+      ],
+    })
+      .then(data => {
+        res.send(data);
+        console.log(data);
+      })
+      .catch(err => {
+        res.send(500).send({
+          message: err.message || "Some error accurred while retrieving books."
+        });
+      });
+  };
+
+
 exports.findAll = async (req, res) => {
   const id = req.userId;
 await  Proyectos.findAndCountAll({
@@ -105,20 +134,6 @@ await  Proyectos.findAndCountAll({
     });
 };
 
-// Find a single with an id
-exports.findOne = (req, res) => {
-  const id = req.params.id;
-
-  Proyectos.findByPk(id)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: `erro al editar el cargo= ${id}`
-      });
-    });
-};
 
 // Update a Book by the id in the request
 exports.update = async (req, res) => {

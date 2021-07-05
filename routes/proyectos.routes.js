@@ -9,7 +9,9 @@ const cpUpload = upload.fields([{ name: 'filename', maxCount: 1 }])
 
     // Create a new cargo
     router.post("/proyectos/listar",[cpUpload,authJwt.verifyToken,authJwt.isAdmin], Controller.find);
-  
+    // Create a new cargo
+
+    router.post("/proyectos/find",[cpUpload], Controller.findOne); 
     // Create a new cargo
     router.post("/proyectos",[cpUpload,authJwt.verifyToken,authJwt.isAdmin], Controller.create);
   
