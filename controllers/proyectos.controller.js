@@ -16,6 +16,10 @@ exports.create = async (req, res) => {
   body.numero=req.body.numero;
   body.titulo=req.body.titulo;
   body.presupuesto=req.body.presupuesto;
+  if(req.files['filename']){
+    const { filename } = req.files['filename'][0]
+    body.archivo= `https://plataformaknowmad.herokuapp.com/public/${filename}`;
+  }
   if(req.body.proyectos_propuestos){
     body.proyectos_propuestos=req.body.proyectos_propuestos;
   }
@@ -34,6 +38,8 @@ exports.create = async (req, res) => {
   body.descripcion=req.body.descripcion;
   body.justificacion=req.body.justificacion;
   body.empresa_id=req.body.empresa_id;
+  body.elabora_id=req.userId;
+  body.aprueba_id=req.body.aprueba_id;
   // Save
 await Proyectos.create(body)
     .then(data => {
@@ -122,6 +128,10 @@ exports.update = async (req, res) => {
   body.numero=req.body.numero;
   body.titulo=req.body.titulo;
   body.presupuesto=req.body.presupuesto;
+  if(req.files['filename']){
+    const { filename } = req.files['filename'][0]
+    body.archivo= `https://plataformaknowmad.herokuapp.com/public/${filename}`;
+  }
   if(req.body.proyectos_propuestos){
     body.proyectos_propuestos=req.body.proyectos_propuestos;
   }
@@ -140,6 +150,8 @@ exports.update = async (req, res) => {
   body.descripcion=req.body.descripcion;
   body.justificacion=req.body.justificacion;
   body.empresa_id=req.body.empresa_id;
+  body.elabora_id=req.userId;
+  body.aprueba_id=req.body.aprueba_id;
   await Proyectos.update(body,{
     where: { id: id }
   })

@@ -3,6 +3,7 @@ const db = require("../models");
 const jwt = require("jsonwebtoken");
 const User = db.user;
 const Op = db.Op;
+const bcrypt = require("bcrypt");
 
 // Retrieve all Books from the database.
 exports.findAll = (req, res) => {
@@ -11,7 +12,34 @@ exports.findAll = (req, res) => {
   User.findAndCountAll({
     limit: 10000000,
     offset: 0,
-    where: {}, // conditions
+    where: {
+      [Op.or]: [
+        { tipo: "Master" },
+        { tipo: "Administrador" }
+      ]
+    }, // conditions
+  })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.send(500).send({
+        message: err.message || "Ocurrio un erro al acceder ."
+      });
+    });
+};
+exports.findAdmin = (req, res) => {
+  const title = req.query.title;
+
+  User.findAndCountAll({
+    limit: 10000000,
+    offset: 0,
+    attributes: ['id','nombre'],
+    where: {
+      [Op.or]: [
+        { tipo: "Master" },
+      ]
+    }, // conditions
   })
     .then(data => {
       res.send(data);
@@ -41,103 +69,6 @@ exports.findAllContacto = (req, res) => {
       });
     });
 };
-// Find a single with an id
-exports.findTecnico = (req, res) => {
-  const codigo = req.body.codigo;
-  console.log(req);
-  User.findAll({
-    where: {
-      codigo: codigo,
-      tipo: 'Tecnico',
-      status: 'activo'
-    },
-     attributes: ['nombre', 'apellido','id','email',  'codigo', 'telefono','imagen','direccion','tipo_tecnico','cuenta','nombre_cuenta'] })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving books."
-      });
-    });
-};
-
-exports.findCoordinadores = (req, res) => {
-  const title = req.query.title;
-
-  User.findAll({
-    where: {tipo:"Coordinador"}, // conditions
-    attributes: ['nombre', 'apellido','id', 'email',]
-  })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.send(500).send({
-        message: err.message || "Ocurrio un erro al acceder ."
-      });
-    });
-};
-
-exports.findAdministrador = async (req, res) => {
-
-
- await User.findAll({
-    where: {tipo:"Administrador"}, // conditions
-    attributes: ['nombre', 'apellido','id', 'email',]
-  }).then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.send(500).send({
-        message: err.message || "Ocurrio un erro al acceder ."
-      });
-    });
-};
-
-
-
-exports.findregional = async (req, res) => {
-  const id= req.body.id;
-  console.log(id);
-  await  User.findAll({
-      limit: 3000000,
-      offset: 0,
-      where: {
-        regional:id
-      }, // conditions
-      order: [
-        ['id', 'DESC'],
-      ],
-      attributes:['nombre', 'apellido','imagen','imagen','id' ,'codigo'],
-    }) 
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.send(500).send({
-          message: err.message || "Ocurrio un erro al intentar acceder a este recursos."
-        });
-      });
-  };
-  
-
-
-
-exports.findOne = (req, res) => {
-  const id = req.userId
-
-  User.findByPk(id)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: `Error = ${id}`
-      });
-    });
-};
-
 
 // Update a Book by the id in the request
 exports.updateCanal = (req, res) => {
@@ -167,10 +98,8 @@ exports.updateCanal = (req, res) => {
 };
 
 
-
 // Update a Book by the id in the request
-exports.update = (req, res) => {
-  const id = req.userId;
+exports.create = async (req, res) => {
   const body={};
   if(req.files['filename']){
     const { filename } = req.files['filename'][0]
@@ -182,32 +111,41 @@ exports.update = (req, res) => {
     body.firma= `https://plataformaknowmad.herokuapp.com/public/${firma}`;
     console.log(body.imagen);
   }
-  if (req.codigo) {
-    body.codigo= req.body.codigo;
-  }
-  if (req.entidad) {
-    body.entidad= req.body.entidad;
-  }
-  body.direccion= req.body.nombrdireccion;
+  body.password = bcrypt.hashSync(req.body.password, 8)
+  body.tipo= req.body.tipo;
   body.status= req.body.status;
   body.nombre= req.body.nombre;
-  body.apellido= req.body.apellido;
-  body.sexo= req.body.sexo;
-  body.telefono= req.body.telefono;
-  body.regional= req.body.regional;
-  body.dependencia= req.dependencia;
-  if(req.body.tipo_tecnico){
-    body.tipo_tecnico= req.body.tipo_tecnico;
+  body.email= req.body.email;
+
+
+  await User.create(body)
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: err.message || "Some error occurred while creating the Book."
+    });
+    return;
+  });
+};
+
+// Update a Book by the id in the request
+exports.update = (req, res) => {
+  const id = req.body.id;
+  const body={};
+  if(req.files['filename']){
+    const { filename } = req.files['filename'][0]
+    body.imagen= `https://plataformaknowmad.herokuapp.com/public/${filename}`;
   }
-  if(req.body.tipo_cuenta){
-    body.tipo_cuenta= req.body.tipo_cuenta;
+  if(req.files['firma']){
+    const { firma } = req.files['firma'][0]
+    body.firma= `https://plataformaknowmad.herokuapp.com/public/${firma}`;
+
   }
-  if(req.body.nombre_cuenta){
-    body.nombre_cuenta= req.body.nombre_cuenta;
-  }
-  if(req.body.cuenta){
-    body.cuenta= req.body.cuenta;
-  }
+  body.tipo= req.body.tipo;
+  body.status= req.body.status;
+  body.nombre= req.body.nombre;
 
   User.update(body,{
     where: { id: id }

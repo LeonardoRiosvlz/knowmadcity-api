@@ -18,7 +18,7 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
         unique: false
       },
       tipo: {
-        type: DataTypes.ENUM('Master','Cliente','Usuario'),
+        type: DataTypes.ENUM('Master','Administrador','Cliente'),
         unique: false
       },
       canal: {

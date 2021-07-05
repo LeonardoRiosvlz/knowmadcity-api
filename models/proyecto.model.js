@@ -4,10 +4,9 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
       {
         // Attributes
         id: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          autoIncrement: true,
-          primaryKey: true 
+          type: DataTypes.UUID,
+          defaultValue: Sequelize.UUIDV4,
+          primaryKey: true
         },  
         numero: {
           type: DataTypes.STRING(10), 
@@ -18,7 +17,7 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
             unique: false
         },
         status: {
-          type: DataTypes.ENUM('creado', 'procesado', 'enviado', 'aceptado', 'rechazado'), 
+          type: DataTypes.ENUM('Pendiente', 'Aprobado', 'Rechazado'), 
           default:'creado',
           unique: false
         },
@@ -46,13 +45,17 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
           type: DataTypes.JSON,
           
         },
+        archivo:  {
+          type: DataTypes.STRING(200),
+        },
         descripcion:  {
-            type: DataTypes.TEXT,
-        
+            type: DataTypes.TEXT('long'),
+        },
+        oservaciones:  {
+          type: DataTypes.TEXT('long'),
         },
         justificacion: {
-            type: DataTypes.TEXT,
-           
+            type: DataTypes.TEXT('long'),          
         },
         created_at: {
              allowNull: false,

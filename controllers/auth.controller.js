@@ -8,7 +8,7 @@ const { text } = require("body-parser");
 const User = db.user;
 const Cliente = db.cliente;
 const Op = db.Op;
-
+ 
 exports.signup =async (req, res) => {
 
  await User.create({
