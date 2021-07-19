@@ -382,7 +382,6 @@ async function CrearNotificacion(datos){
 async function notificar(data){
 await  User.findByPk(data.uid)
 .then(datas => {
- console.log(datas);
  global.io.to(datas.canal).emit('cliente', data);
 })
 .catch(err => {
