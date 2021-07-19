@@ -201,6 +201,12 @@ exports.update = async (req, res) => {
   if(req.body.descripcion_iniciativa){
     body.descripcion_iniciativa=req.body.descripcion_iniciativa; 
   }
+  if(req.body.dimension_digital){
+    body.dimension_digital=req.body.dimension_digital;
+  }
+  if(req.body.dimension_ecologica){
+    body.dimension_ecologica=req.body.dimension_ecologica;
+  }
   body.descripcion=req.body.descripcion;
   body.justificacion=req.body.justificacion;
   body.empresa_id=req.body.empresa_id;
