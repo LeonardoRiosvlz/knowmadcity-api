@@ -272,6 +272,93 @@ exports.notificar = async (req, res) => {
 
 
 
+// Update a Book by the id in the request
+exports.aprobar = async (req, res) => {
+  console.log(req.userId);
+  const id = req.body.id;
+  const uid = req.userId;
+  const body={};
+  body.status="Aprobado";
+  await Proyectos.update(body,{
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        const datos = {
+          titulo: `Proyecto aprobado`,
+          descripcion: `Se aprobó con exito el proyecto`,
+          origen: "",
+          modulo: `/proyecto/${id}`,
+          icon: "ri-calendar-line",
+          color: "avatar-title bg-primary rounded-circle font-size-16",
+          uid: req.body.elabora_id,
+          uidr:uid,
+          canal: "",
+        };
+        CrearNotificacion(datos);
+        res.send({
+          message: "editado satisfactoriamente."
+        });
+        
+      } else {
+        res.send({
+          message: `No puede editar el coargo con el  el =${id}. Tal vez el cargo no existe o la peticion es vacia!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error al intentar editar el cargo con el id=" + id
+      });
+    });
+};
+
+
+// Update a Book by the id in the request
+exports.rechazar = async (req, res) => {
+  console.log(req.body);
+  const id = req.body.id;
+  const uid = req.userId;
+  const body={};
+  body.status="Rechazado";
+  body.observaciones=req.body.observaciones;
+  await Proyectos.update(body,{
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        const datos = {
+          titulo: `Proyecto rechazado`,
+          descripcion: `Se rechazó el proyecto acceda al link para conocer detalles`,
+          origen: "",
+          modulo: `/proyecto/${id}`,
+          icon: "ri-calendar-line",
+          color: "avatar-title bg-primary rounded-circle font-size-16",
+          uid: req.body.elabora_id,
+          uidr:uid,
+          canal: "",
+        };
+        CrearNotificacion(datos);
+        res.send({
+          message: "editado satisfactoriamente."
+        });
+        
+      } else {
+        res.send({
+          message: `No puede editar el coargo con el  el =${id}. Tal vez el cargo no existe o la peticion es vacia!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error al intentar editar el cargo con el id=" + id
+      });
+    });
+};
+
+
+
+
 async function CrearNotificacion(datos){
   // Save
   await  Notificacion.create(datos)
@@ -325,31 +412,3 @@ exports.delete = async (req, res) => {
     });
 };
 
-// Delete all Books from the database.
-exports.deleteAll = (req, res) => {
-    Proyectos.destroy({
-    where: {},
-    truncate: false
-  })
-    .then(nums => {
-      res.send({ message: `${nums} Books were deleted successfully!` });
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while removing all books."
-      });
-    });
-};
-
-// Find all published Books
-exports.findAllPublished = (req, res) => {
-    Proyectos.findAll({ where: { published: true } })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving books."
-      });
-    });
-};
